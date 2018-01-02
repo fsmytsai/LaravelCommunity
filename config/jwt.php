@@ -100,7 +100,7 @@ return [
     |
     */
 
-    //'ttl' => env('JWT_TTL', 60),
+//    'ttl' => env('JWT_TTL', 60),
     'ttl' => null,
 
     /*
@@ -150,7 +150,7 @@ return [
     'required_claims' => [
         'iss',
         'iat',
-        'exp',
+//        'exp', 無過期時間
         'nbf',
         'sub',
         'jti',

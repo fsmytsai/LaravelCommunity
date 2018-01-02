@@ -6,6 +6,24 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+/**
+ * App\User
+ *
+ * @property string $account
+ * @property string $password
+ * @property string $email
+ * @property string $name
+ * @property string $profile_pic
+ * @property \Carbon\Carbon $created_at
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAccount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereProfilePic($value)
+ * @mixin \Eloquent
+ */
 class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
@@ -21,7 +39,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'account', 'email', 'password',
+        'account', 'email', 'password', 'name'
     ];
 
     /**
@@ -30,7 +48,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'created_at'
     ];
 
     /**
