@@ -23,4 +23,10 @@ Route::post('register', 'UserController@register');
 Route::group(['middleware' => 'jwt_auth'], function () {
     Route::get('getUserData', 'UserController@getUserData');
     Route::get('logout', 'UserController@logout');
+
+    Route::get('getPosts', 'PostController@getPosts');
+    Route::get('getUserAllPosts', 'PostController@getUserAllPosts');
+    Route::post('createPost', 'PostController@createPost');
+    Route::put('updatePost', 'PostController@updatePost');
+    Route::delete('deletePost', 'PostController@deletePost');
 });

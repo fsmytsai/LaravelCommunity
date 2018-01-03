@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Services\UserService;
+use Auth;
 use Validator;
 
 class UserController extends Controller
