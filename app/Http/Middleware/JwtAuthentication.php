@@ -23,7 +23,7 @@ class JwtAuthentication extends BaseMiddleware
         } catch (JWTException $exception) {
             return response()->json(['未登入'], 400);
         }
-        $request['user'] = Auth::guard()->user();
+        $request['account'] = Auth::guard()->user()['account'];
         return $next($request);
     }
 }

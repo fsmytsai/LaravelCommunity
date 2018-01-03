@@ -27,7 +27,6 @@ class PostService
 
     public function createPost($postData)
     {
-        $postData['account'] = $postData['user']['account'];
         $post = PostEloquent::create($postData);
         return $post->post_id;
     }
@@ -36,8 +35,7 @@ class PostService
     {
         $post = PostEloquent::find($putData['post_id']);
         if ($post) {
-            if ($post->account == $putData['user']['account']) {
-                $putData['account'] = $putData['user']['account'];
+            if ($post->account == $putData['account']) {
                 $post->update($putData);
                 return '';
             } else {
@@ -51,7 +49,7 @@ class PostService
     {
         $post = PostEloquent::find($deleteData['post_id']);
         if ($post) {
-            if ($post->account == $deleteData['user']['account']) {
+            if ($post->account == $deleteData['account']) {
                 try {
                     $post->delete();
                 } catch (\Exception $ex) {

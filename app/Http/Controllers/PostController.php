@@ -25,7 +25,7 @@ class PostController extends Controller
 
     public function getUserAllPosts(Request $request)
     {
-        $postArr = $this->postService->getUserAllPosts($request->input('user')['account']);
+        $postArr = $this->postService->getUserAllPosts($request->input('account'));
         return response()->json(['postArr' => $postArr], 200);
     }
 
