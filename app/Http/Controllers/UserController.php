@@ -16,37 +16,6 @@ class UserController extends Controller
         $this->userService = new UserService();
     }
 
-    public function login(Request $request)
-    {
-        $postData = $request->only('account', 'password');
-        $objValidator = Validator::make(
-            $postData,
-            [
-                'account' => 'required',
-                'password' => 'required'
-            ],
-            [
-                'account.required' => '請輸入帳號',
-                'password.required' => '請輸入密碼'
-            ]
-        );
-
-        if ($objValidator->fails())
-            return response()->json($objValidator->errors()->all(), 400);
-
-        $resMessage = $this->userService->login($postData);
-        if ($resMessage != '')
-            return response()->json($resMessage, 400);
-
-        return response()->json('bearer ' . Auth::guard()->attempt($postData), 200);
-    }
-
-    public function getUserData()
-    {
-        return response()->json(Auth::guard()->user());
-//        return response()->json(JWTAuth::decode(JWTAuth::getToken())->toArray()); 取得 claims
-    }
-
     public function register(Request $request)
     {
         $postData = $request->all();
@@ -88,5 +57,42 @@ class UserController extends Controller
 
         $this->userService->register($postData);
         return response()->json('註冊成功', 200);
+    }
+
+    public function login(Request $request)
+    {
+        $postData = $request->only('account', 'password');
+        $objValidator = Validator::make(
+            $postData,
+            [
+                'account' => 'required',
+                'password' => 'required'
+            ],
+            [
+                'account.required' => '請輸入帳號',
+                'password.required' => '請輸入密碼'
+            ]
+        );
+
+        if ($objValidator->fails())
+            return response()->json($objValidator->errors()->all(), 400);
+
+        $resMessage = $this->userService->login($postData);
+        if ($resMessage != '')
+            return response()->json([$resMessage], 400);
+
+        return response()->json('bearer ' . Auth::guard()->attempt($postData), 200);
+    }
+
+    public function getUserData()
+    {
+        return response()->json(Auth::guard()->user(), 200);
+//        return response()->json(JWTAuth::decode(JWTAuth::getToken())->toArray()); 取得 claims
+    }
+
+    public function logout()
+    {
+        Auth::guard()->logout();
+        return response()->json('登出成功', 200);
     }
 }

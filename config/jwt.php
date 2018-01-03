@@ -184,7 +184,7 @@ return [
     |
     */
 
-    'blacklist_enabled' => env('JWT_BLACKLIST_ENABLED', false),
+    'blacklist_enabled' => env('JWT_BLACKLIST_ENABLED', true),
 
     /*
     | -------------------------------------------------------------------------
