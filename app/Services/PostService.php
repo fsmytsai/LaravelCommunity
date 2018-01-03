@@ -25,19 +25,19 @@ class PostService
         return PostEloquent::where('account', $account)->get();
     }
 
-    public function createPost($postData, $executorAccount)
+    public function createPost($postData)
     {
-        $postData['account'] = $executorAccount;
+        $postData['account'] = $postData['user']['account'];
         $post = PostEloquent::create($postData);
         return $post->post_id;
     }
 
-    public function updatePost($putData, $executorAccount)
+    public function updatePost($putData)
     {
         $post = PostEloquent::find($putData['post_id']);
         if ($post) {
-            if ($post->account == $executorAccount) {
-                $putData['account'] = $executorAccount;
+            if ($post->account == $putData['user']['account']) {
+                $putData['account'] = $putData['user']['account'];
                 $post->update($putData);
                 return '';
             } else {
@@ -47,11 +47,11 @@ class PostService
         return '無此文章';
     }
 
-    public function deletePost($postData, $executorAccount)
+    public function deletePost($deleteData)
     {
-        $post = PostEloquent::find($postData['post_id']);
+        $post = PostEloquent::find($deleteData['post_id']);
         if ($post) {
-            if ($post->account == $executorAccount) {
+            if ($post->account == $deleteData['user']['account']) {
                 try {
                     $post->delete();
                 } catch (\Exception $ex) {

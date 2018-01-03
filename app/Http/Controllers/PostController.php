@@ -23,11 +23,10 @@ class PostController extends Controller
         return response()->json(['postArr' => $postArr], 200);
     }
 
-    public function getUserAllPosts()
+    public function getUserAllPosts(Request $request)
     {
-        $executorAccount = Auth::guard()->user()['account'];
-        $data = $this->postService->getUserAllPosts($executorAccount);
-        return response()->json($data, 200);
+        $postArr = $this->postService->getUserAllPosts($request->input('user')['account']);
+        return response()->json(['postArr' => $postArr], 200);
     }
 
     public function createPost(Request $request)
@@ -47,8 +46,7 @@ class PostController extends Controller
         if ($objValidator->fails())
             return response()->json($objValidator->errors()->all(), 400);
 
-        $executorAccount = Auth::guard()->user()['account'];
-        $post_id = $this->postService->CreatePost($postData, $executorAccount);
+        $post_id = $this->postService->CreatePost($postData);
         if ($post_id != 0)
             return response()->json($post_id, 200);
         else
@@ -74,8 +72,7 @@ class PostController extends Controller
         if ($objValidator->fails())
             return response()->json($objValidator->errors()->all(), 400);
 
-        $executorAccount = Auth::guard()->user()['account'];
-        $resMessage = $this->postService->updatePost($putData, $executorAccount);
+        $resMessage = $this->postService->updatePost($putData);
         if ($resMessage == '')
             return response()->json('修改成功', 200);
         else
@@ -98,8 +95,7 @@ class PostController extends Controller
         if ($objValidator->fails())
             return response()->json($objValidator->errors()->all(), 400);
 
-        $executorAccount = Auth::guard()->user()['account'];
-        $resMessage = $this->postService->deletePost($deleteData, $executorAccount);
+        $resMessage = $this->postService->deletePost($deleteData);
         if ($resMessage == '')
             return response()->json('刪除成功', 200);
         else

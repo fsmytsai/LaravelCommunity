@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Auth;
 use Closure;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
@@ -22,6 +23,7 @@ class JwtAuthentication extends BaseMiddleware
         } catch (JWTException $exception) {
             return response()->json(['未登入'], 400);
         }
+        $request['user'] = Auth::guard()->user();
         return $next($request);
     }
 }
