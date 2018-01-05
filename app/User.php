@@ -30,9 +30,9 @@ class User extends Authenticatable implements JWTSubject
     use Notifiable;
 
     protected $table = 'users';
-    const UPDATED_AT = null;
-    public $incrementing = false;
     protected $primaryKey = 'account';
+    public $incrementing = false;
+    const UPDATED_AT = null;
 
     /**
      * The attributes that are mass assignable.

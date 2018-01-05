@@ -33,4 +33,24 @@ class Post extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function postComments()
+    {
+        return $this->hasMany(PostComment::class);
+    }
+
+    public function postLikes()
+    {
+        return $this->hasMany(PostLike::class);
+    }
+
+    public function postImages()
+    {
+        return $this->hasMany(PostImage::class);
+    }
+
+    public function postLocations()
+    {
+        return $this->hasMany(PostLocation::class);
+    }
 }
