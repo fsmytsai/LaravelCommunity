@@ -19,6 +19,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post wherePostId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\PostComment[] $postComments
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\PostImage[] $postImages
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\PostLike[] $postLikes
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\PostLocation[] $postLocations
  */
 class Post extends Model
 {
@@ -31,7 +35,7 @@ class Post extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'account');
     }
 
     public function postComments()

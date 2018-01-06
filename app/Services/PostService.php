@@ -14,10 +14,15 @@ class PostService
 {
     public function getPosts($showedPostIdArr)
     {
-        return PostEloquent::whereNotIn('post_id', $showedPostIdArr)
+        $postArr = PostEloquent::whereNotIn('post_id', $showedPostIdArr)
             ->orderByDesc('updated_at')
             ->take(15)
+            ->with(['user' => function ($query) {
+                $query->select(['account', 'name', 'profile_pic']);
+            }])
             ->get();
+
+        return $postArr;
     }
 
     public function getUserAllPosts($account)
@@ -25,7 +30,7 @@ class PostService
         return PostEloquent::where('account', $account)->get();
     }
 
-    public function createPost($postData)
+    public function createPost(&$postData)
     {
         $post = PostEloquent::create($postData);
         return $post->post_id;
