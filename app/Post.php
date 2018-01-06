@@ -40,21 +40,21 @@ class Post extends Model
 
     public function postComments()
     {
-        return $this->hasMany(PostComment::class);
+        return $this->hasMany(PostComment::class, 'post_id');
     }
 
     public function postLikes()
     {
-        return $this->hasMany(PostLike::class);
+        return $this->hasMany(PostLike::class, 'post_id');
     }
 
     public function postImages()
     {
-        return $this->hasMany(PostImage::class);
+        return $this->hasMany(PostImage::class, 'post_id');
     }
 
     public function postLocations()
     {
-        return $this->hasMany(PostLocation::class);
+        return $this->hasMany(PostLocation::class, 'post_id');
     }
 }
