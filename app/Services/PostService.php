@@ -30,7 +30,7 @@ class PostService
         return PostEloquent::where('account', $account)->get();
     }
 
-    public function createPost(&$postData)
+    public function createPost($postData)
     {
         $post = PostEloquent::create($postData);
         return $post->post_id;
@@ -47,7 +47,7 @@ class PostService
                 return '無權修改';
             }
         }
-        return '無此文章';
+        return '無此貼文';
     }
 
     public function deletePost($deleteData)
@@ -65,6 +65,6 @@ class PostService
                 return '無權刪除';
             }
         }
-        return '無此文章';
+        return '無此貼文';
     }
 }
