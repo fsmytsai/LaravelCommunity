@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\PostService;
-use Auth;
 use Validator;
 
 class PostController extends Controller
@@ -38,17 +37,17 @@ class PostController extends Controller
                 'content' => 'required|max:3000'
             ],
             [
-                'content.required' => '請輸入文章內容',
-                'content.max' => '文章內容不可超過 3000 字元'
+                'content.required' => '請輸入貼文內容',
+                'content.max' => '貼文內容不可超過 3000 字元'
             ]
         );
 
         if ($objValidator->fails())
             return response()->json($objValidator->errors()->all(), 400);
 
-        $post_id = $this->postService->CreatePost($postData);
-        if ($post_id != 0)
-            return response()->json($post_id, 200);
+        $postId = $this->postService->createPost($postData);
+        if ($postId != 0)
+            return response()->json($postId, 200);
         else
             return response()->json('新增貼文失敗', 400);
     }
@@ -64,8 +63,8 @@ class PostController extends Controller
             ],
             [
                 'post_id.*' => '錯誤',
-                'content.required' => '請輸入文章內容',
-                'content.max' => '文章內容不可超過 3000 字元'
+                'content.required' => '請輸入貼文內容',
+                'content.max' => '貼文內容不可超過 3000 字元'
             ]
         );
 
