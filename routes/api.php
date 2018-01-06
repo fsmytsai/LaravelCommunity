@@ -29,4 +29,9 @@ Route::group(['middleware' => 'jwt_auth'], function () {
     Route::post('createPost', 'PostController@createPost');
     Route::put('updatePost', 'PostController@updatePost');
     Route::delete('deletePost', 'PostController@deletePost');
+
+    Route::get('getPostComments', 'PostCommentController@getPostComments');
+    Route::post('createPostComment', 'PostCommentController@createPostComment');
+    Route::put('updatePostComment', 'PostCommentController@updatePostComment');
+    Route::delete('deletePostComment', 'PostCommentController@deletePostComment');
 });
