@@ -55,10 +55,12 @@ class PostCommentController extends Controller
             return response()->json($objValidator->errors()->all(), 400);
 
         $postComId = $this->postCommentService->createPostComment($postData);
-        if ($postComId != 0)
-            return response()->json($postComId, 200);
-        else
+        if ($postComId == 0)
             return response()->json('新增留言失敗', 400);
+        else if ($postComId == -1)
+            return response()->json('無此貼文', 400);
+        else
+            return response()->json($postComId, 200);
     }
 
     public function updatePostComment(Request $request)
