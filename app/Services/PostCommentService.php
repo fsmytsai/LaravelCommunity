@@ -9,6 +9,7 @@
 namespace App\Services;
 
 use App\PostComment as PostCommentEloquent;
+use DB;
 
 class PostCommentService
 {
@@ -28,8 +29,23 @@ class PostCommentService
 
     public function createPostComment($postData)
     {
-        $postComment = PostCommentEloquent::create($postData);
-        return $postComment->post_com_id;
+        $post = \App\Post::find($postData['post_id']);
+        if (!$post)
+            return -1;//無此貼文
+
+        $post->new_com_time = \Carbon\Carbon::now();
+        $postComment = null;
+        try {
+            DB::transaction(function () use ($postData, $post, &$postComment) {
+                $post->save();
+                $postComment = PostCommentEloquent::create($postData);
+            });
+            return $postComment->post_com_id;
+        } catch (\Exception $e) {
+            return 0;
+        } catch (\Throwable $e) {
+            return 0;
+        }
     }
 
     public function updatePostComment($putData)
