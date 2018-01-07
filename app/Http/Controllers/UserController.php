@@ -81,7 +81,7 @@ class UserController extends Controller
         if ($resMessage != '')
             return response()->json([$resMessage], 400);
 
-        return response()->json('bearer ' . Auth::guard()->attempt($postData), 200);
+        return response()->json(Auth::guard()->attempt($postData), 200);
     }
 
     public function getUserData()
