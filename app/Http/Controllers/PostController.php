@@ -24,7 +24,21 @@ class PostController extends Controller
 
     public function getUserAllPosts(Request $request)
     {
-        $postArr = $this->postService->getUserAllPosts($request->input('account'));
+        $getData = $request->all();
+        $objValidator = Validator::make(
+            $getData,
+            [
+                'user_account' => 'required'
+            ],
+            [
+                'user_account.required' => '請輸入用戶帳號'
+            ]
+        );
+
+        if ($objValidator->fails())
+            return response()->json($objValidator->errors()->all(), 400);
+
+        $postArr = $this->postService->getUserAllPosts($request->input('user_account'));
         return response()->json(['postArr' => $postArr], 200);
     }
 
