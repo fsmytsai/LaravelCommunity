@@ -18,7 +18,9 @@ class CreatePostsTable extends Migration
             $table->string('account', 20);
             $table->foreign('account')->references('account')->on('users');
             $table->string('content', 3000);
-            $table->timestamps();
+            $table->timestamp('new_com_time')->useCurrent();
+            $table->dateTime('update_post_time')->nullable();
+            $table->dateTime('created_at');
         });
     }
 
