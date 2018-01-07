@@ -10,24 +10,28 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $post_id
  * @property string $account
  * @property string $content
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @property-read \App\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereAccount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereContent($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post wherePostId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property string $new_com_time
+ * @property string|null $update_post_time
+ * @property \Carbon\Carbon $created_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\PostComment[] $postComments
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\PostImage[] $postImages
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\PostLike[] $postLikes
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\PostLocation[] $postLocations
+ * @property-read \App\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereAccount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereNewComTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post wherePostId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereUpdatePostTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post withData()
+ * @mixin \Eloquent
  */
 class Post extends Model
 {
     protected $table = 'posts';
     protected $primaryKey = 'post_id';
+    const UPDATED_AT = null;
 
     protected $fillable = [
         'account', 'content'
@@ -56,5 +60,14 @@ class Post extends Model
     public function postLocations()
     {
         return $this->hasMany(PostLocation::class, 'post_id');
+    }
+
+    public function scopeWithData($query)
+    {
+        return $query->withCount('postLikes')
+            ->withCount('postComments')
+            ->with(['user' => function ($query) {
+                $query->select(['account', 'name', 'profile_pic']);
+            }]);
     }
 }
