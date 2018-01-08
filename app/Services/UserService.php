@@ -10,6 +10,8 @@ namespace App\Services;
 
 use App\User as UserEloquent;
 use Hash;
+use Image;
+use Storage;
 
 class UserService
 {
@@ -29,5 +31,32 @@ class UserService
     {
         $postData['password'] = bcrypt($postData['password']);
         UserEloquent::create($postData);
+    }
+
+    public function updateProfilePic(\Illuminate\Http\UploadedFile $file, $account)
+    {
+        $newFileName = date("YmdHis", time()) . '___' . rand(1000, 9999) . '___' . $file->getClientOriginalName();
+
+        if (strlen($newFileName) > 200)
+            return '0';
+
+        $image = Image::make($file);
+        $image->resize(350, null, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
+
+        Storage::put('public/profilePics/' . $newFileName, (string)$image->encode());
+
+
+        $user = UserEloquent::find($account);
+        if ($user->profile_pic) {
+            if (Storage::disk('public')->has('profilePics/' . $user->profile_pic)) {
+                Storage::delete('public/profilePics/' . $user->profile_pic);
+            }
+        }
+        $user->profile_pic = $newFileName;
+        $user->save();
+        return $newFileName;
     }
 }

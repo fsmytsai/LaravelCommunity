@@ -95,4 +95,31 @@ class UserController extends Controller
         Auth::guard()->logout();
         return response()->json('登出成功', 200);
     }
+
+    public function updateProfilePic(Request $request)
+    {
+        $objValidator = Validator::make(
+            $request->all(),
+            [
+                'profile_pic' => 'required|mimes:jpeg,bmp,png'
+            ],
+            [
+                'mimes' => '圖檔格式錯誤(副檔名須為jpg ,jpeg, png, bmp)',
+                'required' => '請上傳圖片'
+            ]
+        );
+
+        if ($objValidator->fails())
+            return response()->json($objValidator->errors()->all(), 400);
+
+        $file = $request->file('profile_pic');
+        if (!$file->isValid()) {
+            return response()->json('保存圖片失敗', 400);
+        }
+        $newFileName = $this->userService->updateProfilePic($file, $request->input('account'));
+        if ($newFileName == '0')
+            return response()->json('檔名過長', 400);
+        else
+            return response()->json($newFileName, 200);
+    }
 }
