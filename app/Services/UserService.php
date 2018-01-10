@@ -44,19 +44,17 @@ class UserService
         $image->resize(350, null, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
-        });
-
-        Storage::put('public/profilePics/' . $newFileName, (string)$image->encode());
-
+        })->save('images/profilePics/' . $newFileName);
 
         $user = UserEloquent::find($account);
         if ($user->profile_pic) {
-            if (Storage::disk('public')->has('profilePics/' . $user->profile_pic)) {
-                Storage::delete('public/profilePics/' . $user->profile_pic);
+            if (file_exists('images/profilePics/' . $user->profile_pic)) {
+                unlink('images/profilePics/' . $user->profile_pic);
             }
         }
         $user->profile_pic = $newFileName;
         $user->save();
+
         return $newFileName;
     }
 }
